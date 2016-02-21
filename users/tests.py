@@ -31,10 +31,11 @@ class UserRecordTests(APITestCase):
         """
         url = reverse('userlist')
         response = self.client.post(url, self.new_user, format='json')
+        stored_user = ApiUser.objects.get(userid=self.new_user.get("userid"))
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(ApiUser.objects.count(), 2)  # existing + new user
         self.assertEqual(
-            response.data.get("first_name"),
+            stored_user.first_name,
             self.new_user.get("first_name"))
 
     def test_get_bad_user(self):
@@ -78,8 +79,9 @@ class UserRecordTests(APITestCase):
         """
         url = reverse('user', kwargs={"userid": self.good_user})
         response = self.client.put(url, self.new_user, format='json')
+        updated_user = ApiUser.objects.get(userid=self.new_user.get("userid"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data.get("first_name"),
+        self.assertEqual(updated_user.first_name,
                          self.new_user.get("first_name"))
 
     def test_delete_good_user(self):
