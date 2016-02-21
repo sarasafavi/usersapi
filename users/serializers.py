@@ -1,15 +1,15 @@
-from users.models import User, Group
+from users.models import ApiUser, ApiGroup
 from rest_framework import serializers
 
 
 class UserSerializer(serializers.ModelSerializer):
     groups = serializers.SlugRelatedField(
         many=True,
-        queryset=Group.objects,
+        queryset=ApiGroup.objects,
         slug_field='name')
 
     class Meta:
-        model = User
+        model = ApiUser
         fields = ('first_name', 'last_name', 'userid', 'groups')
 
 
@@ -18,11 +18,11 @@ class GroupSerializer(serializers.ModelSerializer):
 
     users = serializers.SlugRelatedField(
         many=True,
-        queryset=User.objects,
+        queryset=ApiUser.objects,
         slug_field='userid')
 
     class Meta:
-        model = Group
+        model = ApiGroup
         fields = ('name', 'users')
 
 
@@ -30,5 +30,5 @@ class NewGroupSerializer(serializers.ModelSerializer):
     """New groups are created empty: only a 'name' value is required."""
 
     class Meta:
-        model = Group
+        model = ApiGroup
         fields = ('name',)

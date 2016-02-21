@@ -1,7 +1,7 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.core.urlresolvers import reverse
-from users.models import User, Group
+from users.models import ApiUser, ApiGroup
 
 
 class UserRecordTests(APITestCase):
@@ -23,7 +23,7 @@ class UserRecordTests(APITestCase):
         self.bad_user = "nobody"
 
         # create a pre-existing user record
-        User.objects.create(**self.existing_user)
+        ApiUser.objects.create(**self.existing_user)
 
     def test_create_user(self):
         """
@@ -32,7 +32,7 @@ class UserRecordTests(APITestCase):
         url = reverse('userlist')
         response = self.client.post(url, self.new_user, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(User.objects.count(), 2)  # existing + new user
+        self.assertEqual(ApiUser.objects.count(), 2)  # existing + new user
         self.assertEqual(
             response.data.get("first_name"),
             self.new_user.get("first_name"))
@@ -102,8 +102,8 @@ class GroupTests(APITestCase):
         }
 
         # create a few pre-existing records
-        Group.objects.create(name="existing_group")
-        User.objects.create(**self.existing_user)
+        ApiGroup.objects.create(name="existing_group")
+        ApiUser.objects.create(**self.existing_user)
 
         self.new_group = {"name": "new_group"}
         self.good_users = ["aman"]

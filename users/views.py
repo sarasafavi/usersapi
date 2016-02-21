@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import Http404
-from users.models import User, Group
+from users.models import ApiUser, ApiGroup
 from users.serializers import (
     UserSerializer, GroupSerializer, NewGroupSerializer)
 
@@ -24,7 +24,7 @@ class UserList(APIView):
 
     def get(self, request):
         # TODO this list-all-on-GET endpoint is not actually in spec
-        users = User.objects.all()
+        users = ApiUser.objects.all()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
@@ -44,8 +44,8 @@ class UserById(APIView):
 
     def get_user(self, userid):
         try:
-            user = User.objects.get(userid=userid)
-        except User.DoesNotExist:
+            user = ApiUser.objects.get(userid=userid)
+        except ApiUser.DoesNotExist:
             raise Http404
         return user
 
@@ -79,7 +79,7 @@ class GroupList(APIView):
 
     def get(self, request):
         # TODO this list-all-on-GET endpoint is not actually in spec
-        groups = Group.objects.all()
+        groups = ApiGroup.objects.all()
         serializer = GroupSerializer(groups, many=True)
         return Response(serializer.data)
 
@@ -99,8 +99,8 @@ class GroupByName(APIView):
 
     def get_group(self, name):
         try:
-            group = Group.objects.get(name=name)
-        except Group.DoesNotExist:
+            group = ApiGroup.objects.get(name=name)
+        except ApiGroup.DoesNotExist:
             raise Http404
         return group
 
