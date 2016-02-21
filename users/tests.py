@@ -26,8 +26,7 @@ class UserRecordTests(APITestCase):
         ApiUser.objects.create(**self.existing_user)
 
     def test_create_user(self):
-        """
-        Test that we can create new user records
+        """We can create new user records
         """
         url = reverse('userlist')
         response = self.client.post(url, self.new_user, format='json')
@@ -39,32 +38,28 @@ class UserRecordTests(APITestCase):
             self.new_user.get("first_name"))
 
     def test_get_bad_user(self):
-        """
-        Test that we 404 when trying to get nonexistent user records
+        """We 404 when trying to get nonexistent user records
         """
         url = reverse('user', kwargs={"userid": self.bad_user})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_update_bad_user(self):
-        """
-        Test that we 404 when trying to update nonexistent user records
+        """We 404 when trying to update nonexistent user records
         """
         url = reverse('user', kwargs={"userid": self.bad_user})
         response = self.client.put(url, self.new_user, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_delete_bad_user(self):
-        """
-        Test that we 404 when trying to delete a nonexistent user record
+        """We 404 when trying to delete a nonexistent user record
         """
         url = reverse('user', kwargs={"userid": self.bad_user})
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_get_good_user(self):
-        """
-        Test that we can get existing user records
+        """We can get existing user records
         """
         url = reverse('user', kwargs={"userid": self.good_user})
         response = self.client.get(url)
@@ -74,8 +69,7 @@ class UserRecordTests(APITestCase):
             self.existing_user.get("first_name"))
 
     def test_update_good_user(self):
-        """
-        Test that we can update existing user records
+        """We can update existing user records
         """
         url = reverse('user', kwargs={"userid": self.good_user})
         response = self.client.put(url, self.new_user, format='json')
@@ -85,8 +79,7 @@ class UserRecordTests(APITestCase):
                          self.new_user.get("first_name"))
 
     def test_delete_good_user(self):
-        """
-        Test that we can delete existing user records
+        """We can delete existing user records
         """
         url = reverse('user', kwargs={"userid": self.good_user})
         response = self.client.delete(url)
@@ -114,8 +107,7 @@ class GroupTests(APITestCase):
         self.bad_users = ["nobody"]
 
     def test_create_group(self):
-        """
-        Test that we can create new groups
+        """We can create new groups
         """
 
         url = reverse('grouplist')
@@ -123,8 +115,7 @@ class GroupTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_create_existing_group(self):
-        """
-        Test that we can't create new groups with the same name as an existing
+        """We can't create new groups with the same name as an existing
         group
         """
 
@@ -133,48 +124,42 @@ class GroupTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_get_bad_group(self):
-        """
-        Test that we 404 when trying to get users for a nonexistent group
+        """We 404 when trying to get users for a nonexistent group
         """
         url = reverse('group', kwargs={"groupname": self.bad_group})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_update_bad_group(self):
-        """
-        Test that we 404 when trying to update nonexistent groups
+        """We 404 when trying to update nonexistent groups
         """
         url = reverse('group', kwargs={"groupname": self.bad_group})
         response = self.client.put(url, self.good_users, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_delete_bad_group(self):
-        """
-        Test that we 404 when trying to delete a nonexistent group
+        """We 404 when trying to delete a nonexistent group
         """
         url = reverse('group', kwargs={"groupname": self.bad_group})
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_get_good_group(self):
-        """
-        Test that we can get an existing group
+        """We can get an existing group
         """
         url = reverse('group', kwargs={"groupname": self.good_group})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_update_good_group(self):
-        """
-        Test that we can update an existing group with existing users
+        """We can update an existing group with existing users
         """
         url = reverse('group', kwargs={"groupname": self.good_group})
         response = self.client.put(url, self.good_users, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_update_good_group_with_bad_users(self):
-        """
-        Test that we 400 when trying to update an existing group with
+        """We 400 when trying to update an existing group with
         non-existent users
         """
         url = reverse('group', kwargs={"groupname": self.good_group})
@@ -182,8 +167,7 @@ class GroupTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_delete_good_group(self):
-        """
-        Test that we can an existing group by its name
+        """We can delete an existing group by its name
         """
         url = reverse('group', kwargs={"groupname": self.good_group})
         response = self.client.delete(url)

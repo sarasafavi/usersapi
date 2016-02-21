@@ -14,7 +14,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class GroupSerializer(serializers.ModelSerializer):
-    """Serializer for complete representation of a group record."""
+    """Serializer for complete representation of a group record.
+    """
 
     users = serializers.SlugRelatedField(
         many=True,
@@ -27,7 +28,8 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class NewGroupSerializer(serializers.ModelSerializer):
-    """New groups are created empty: only a 'name' value is required."""
+    """New groups are created empty: only a 'name' value is required.
+    """
 
     class Meta:
         model = ApiGroup
