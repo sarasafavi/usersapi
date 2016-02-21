@@ -2,8 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import Http404
-from users.models import User
-from users.serializers import UserSerializer
+from users.models import User, Group
+from users.serializers import (
+    UserSerializer, GroupSerializer, NewGroupSerializer)
 
 
 class UserList(APIView):
@@ -66,3 +67,58 @@ class UserById(APIView):
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+class GroupList(APIView):
+    """Allow creation of new groups. New groups are created by POSTing valid
+    JSON with a "name" parameter:
+
+    {"name": "new_group_name"}
+
+    New groups may not be created with the same name as an existing group.
+    """
+
+    def get(self, request):
+        # TODO this list-all-on-GET endpoint is not actually in spec
+        groups = Group.objects.all()
+        serializer = GroupSerializer(groups, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = NewGroupSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GroupByName(APIView):
+    """Allow access of groups by name. Permitted actions are:
+    GET: returns the group and user IDs of any members
+    PUT: update the group: requires a list of valid user IDs
+    DELETE: delete the group"""
+
+    def get_group(self, name):
+        try:
+            group = Group.objects.get(name=name)
+        except Group.DoesNotExist:
+            raise Http404
+        return group
+
+    def get(self, request, groupname):
+        group = self.get_group(groupname)
+        serializer = GroupSerializer(group)
+        return Response(serializer.data)
+
+    def put(self, request, groupname):
+        group = self.get_group(groupname)
+        update = {"users": request.data}  # spec wants list as request body
+        serializer = GroupSerializer(group, update, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, groupname):
+        group = self.get_group(groupname)
+        group.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
