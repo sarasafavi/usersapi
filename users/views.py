@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.exceptions import NotFound
 from rest_framework import status
-from django.http import Http404
 from users.models import ApiUser, ApiGroup
 from users.serializers import (
     UserSerializer, GroupSerializer, NewGroupSerializer)
@@ -49,7 +49,7 @@ class UserById(APIView):
         try:
             user = ApiUser.objects.get(userid=userid)
         except ApiUser.DoesNotExist:
-            raise Http404
+            raise NotFound
         return user
 
     def get(self, request, userid):
@@ -107,7 +107,7 @@ class GroupByName(APIView):
         try:
             group = ApiGroup.objects.get(name=name)
         except ApiGroup.DoesNotExist:
-            raise Http404
+            raise NotFound
         return group
 
     def get(self, request, groupname):
