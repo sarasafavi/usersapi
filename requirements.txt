@@ -1,0 +1,4 @@
+Django==1.9.2
+djangorestframework==3.3.2
+PyYAML==3.11
+wheel==0.29.0
