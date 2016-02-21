@@ -9,12 +9,14 @@ Developer Setup
 Requirements:
     * Django 1.8+
     * djangorestframework 3.3+
-    * Python 3.3+
+    * Python 3.4+
 
 This project uses SQLite: this is for demo & local testing purposes only, and
 *not* intended for use in production.
 
-A Python 3 virtualenv is recommended for local development.
+A Python virtualenv is recommended for local development:
+
+    ``$ virtualenv --python python3.4 users``
 
 Running
 ========
@@ -33,12 +35,9 @@ You can also interactively browse the API & its documentation in your browser,
 at
     ``localhost:8000/api/users`` and ``localhost:8000/api/groups``.
 
-Testing
-=========
 
-To run tests, activate the project's virtualenv and do:
-
-    ``$ python api/manage.py test users``
+To run tests, from within the project root do:
+    ``$ tox``
 
 Notes
 ======
