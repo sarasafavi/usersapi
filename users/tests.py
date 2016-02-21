@@ -84,6 +84,10 @@ class UserRecordTests(APITestCase):
         url = reverse('user', kwargs={"userid": self.good_user})
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        get_deleted_user = self.client.get(url)
+        self.assertEqual(
+            get_deleted_user.status_code,
+            status.HTTP_404_NOT_FOUND)
 
 
 class GroupTests(APITestCase):
@@ -172,3 +176,7 @@ class GroupTests(APITestCase):
         url = reverse('group', kwargs={"groupname": self.good_group})
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        get_deleted_group = self.client.get(url)
+        self.assertEqual(
+            get_deleted_group.status_code,
+            status.HTTP_404_NOT_FOUND)
