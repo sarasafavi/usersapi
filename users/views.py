@@ -76,7 +76,7 @@ class GroupList(APIView):
 
     New groups are created by POSTing valid JSON with a "name" parameter:
 
-    {"name": "new_group_name"}
+    {"name": "new_group"}
 
     New groups may not be created with the same name as an existing group.
     """
