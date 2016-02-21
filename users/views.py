@@ -23,12 +23,6 @@ class UserList(APIView):
     any given groups must already exist.
     """
 
-    def get(self, request):
-        # TODO this list-all-on-GET endpoint is not actually in spec
-        users = ApiUser.objects.all()
-        serializer = UserSerializer(users, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -80,12 +74,6 @@ class GroupList(APIView):
 
     New groups may not be created with the same name as an existing group.
     """
-
-    def get(self, request):
-        # TODO this list-all-on-GET endpoint is not actually in spec
-        groups = ApiGroup.objects.all()
-        serializer = GroupSerializer(groups, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         serializer = NewGroupSerializer(data=request.data)
