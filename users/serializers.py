@@ -5,7 +5,7 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
     groups = serializers.SlugRelatedField(
         many=True,
-        queryset=ApiGroup.objects,
+        queryset=ApiGroup.objects.all(),
         slug_field='name')
 
     class Meta:
@@ -19,7 +19,7 @@ class GroupSerializer(serializers.ModelSerializer):
 
     users = serializers.SlugRelatedField(
         many=True,
-        queryset=ApiUser.objects,
+        queryset=ApiUser.objects.all(),
         slug_field='userid')
 
     class Meta:
