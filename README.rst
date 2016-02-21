@@ -32,3 +32,7 @@ Testing
 
 Notes
 ======
+
+* This is a demo project only: in the real world, a secure ``SECRET_KEY`` (for
+  project-level ``settings.py``) value would be generated locally, and stored
+  outside of the repo.
